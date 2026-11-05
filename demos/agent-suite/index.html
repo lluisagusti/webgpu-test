@@ -1,0 +1,95 @@
+<!-- Demo 2: agente con LLM, Stable Diffusion pequeño y TTS. -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agente — ejemplo-webgpu</title>
+  <link rel="stylesheet" href="../../shared/style.css">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div id="file-banner" class="file-banner" hidden>
+    <strong>file:// no funciona.</strong>
+    Esta demo descarga varios gigabytes y usa módulos ES. Desde la raíz del repositorio:
+    <code>python3 -m http.server 8000</code>
+    y abre <a href="http://localhost:8000/demos/agent-suite/">http://localhost:8000/demos/agent-suite/</a>.
+  </div>
+  <div id="gpu-banner" class="gpu-banner" hidden></div>
+
+  <header class="top">
+    <div>
+      <p class="eyebrow"><a href="../../">ejemplo-webgpu</a> · demo 2</p>
+      <h1>Agente en la pestaña</h1>
+    </div>
+  </header>
+  <p class="lede">
+    Tres descargas independientes. El chat se queda cerrado hasta que el modelo de
+    lenguaje está cargado. Puede pedir una imagen al Stable Diffusion pequeño o
+    leer una frase con MMS en español.
+  </p>
+
+  <div class="stack">
+    <section class="card llm-hero" id="llm-card">
+      <p class="eyebrow">Componente 3 · la descarga grande</p>
+      <h2 id="llm-title">Modelo de lenguaje</h2>
+      <p class="hero-number" id="llm-percent">0 %</p>
+      <div class="bar hero" id="llm-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <span id="llm-fill"></span>
+      </div>
+      <p class="meta"><span id="llm-bytes">0 B / —</span><span id="llm-eta">elige un modelo</span></p>
+      <p class="meta" id="llm-file"></p>
+      <p class="status" id="llm-status">Elige el tamaño y pulsa descargar. El de ~7,6 GB es el objetivo cercano a 8 GB; el de 3,8 GB es el que cabe en una GPU de portátil.</p>
+      <fieldset class="presets" id="presets"></fieldset>
+      <div class="row" style="margin-top: 0.8rem;">
+        <button type="button" id="llm-go">Descargar el modelo de lenguaje</button>
+        <button type="button" class="secondary" id="llm-cancel" hidden>Cancelar y elegir otro</button>
+        <button type="button" class="secondary" id="clear-llm">Vaciar caché del LLM</button>
+      </div>
+    </section>
+
+    <div class="components">
+      <section class="card">
+        <p class="eyebrow">Componente 1</p>
+        <h2>Stable Diffusion pequeño</h2>
+        <p class="status" id="sd-status">Esperando WebGPU…</p>
+        <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="sd-bar">
+          <span id="sd-fill"></span>
+        </div>
+        <p class="meta"><span id="sd-bytes">0 B / —</span><span id="sd-eta">—</span></p>
+      </section>
+      <section class="card">
+        <p class="eyebrow">Componente 2 · español</p>
+        <h2>Voz MMS</h2>
+        <p class="status" id="tts-status">Esperando WebGPU…</p>
+        <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="tts-bar">
+          <span id="tts-fill"></span>
+        </div>
+        <p class="meta"><span id="tts-bytes">0 B / —</span><span id="tts-eta">—</span></p>
+        <div class="row">
+          <button type="button" class="secondary" id="tts-demo" disabled>Probar una frase</button>
+        </div>
+      </section>
+    </div>
+
+    <section class="card">
+      <h2>Conversación</h2>
+      <p class="lede">Pide un dibujo o que lo lea en alto. El formato de herramienta es un bloque <code>```tool</code> con JSON.</p>
+      <div class="chat" id="log" aria-live="polite"></div>
+      <form id="composer" class="composer" style="margin-top: 0.8rem;">
+        <label>Mensaje
+          <textarea id="input" rows="3" disabled placeholder="El chat se activa cuando el LLM termina de cargar."></textarea>
+        </label>
+        <button type="submit" id="send" disabled>Enviar</button>
+      </form>
+    </section>
+  </div>
+
+  <script>
+    if (location.protocol === "file:") {
+      document.getElementById("file-banner").hidden = false;
+    }
+  </script>
+  <script type="module" src="./main.js"></script>
+</body>
+</html>

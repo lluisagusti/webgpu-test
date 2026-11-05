@@ -1,0 +1,99 @@
+<!-- Demo 1: Stable Diffusion en dos fases, con barras de descarga propias. -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SD por fases — ejemplo-webgpu</title>
+  <link rel="stylesheet" href="../../shared/style.css">
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div id="file-banner" class="file-banner" hidden>
+    <strong>file:// no funciona.</strong>
+    Los módulos ES y las descargas de Hugging Face fallan si abres este archivo
+    directamente. Desde la raíz del repositorio:
+    <code>python3 -m http.server 8000</code>
+    y abre <a href="http://localhost:8000/demos/sd-phased/">http://localhost:8000/demos/sd-phased/</a>.
+  </div>
+  <div id="gpu-banner" class="gpu-banner" hidden></div>
+
+  <header class="top">
+    <div>
+      <p class="eyebrow"><a href="../../">ejemplo-webgpu</a> · demo 1</p>
+      <h1>Stable Diffusion en dos fases</h1>
+    </div>
+  </header>
+  <p class="lede">
+    La fase A baja el modelo pequeño y lo deja listo para generar. Recién entonces
+    la fase B baja SD-Turbo, con su propia barra. Los dos quedan en la Cache API.
+  </p>
+
+  <div class="phases">
+    <div class="stack" style="display:grid;gap:1rem;">
+      <section class="card" id="phase-a">
+        <p class="phase-tag">Fase A · usable primero</p>
+        <h2>Small Stable Diffusion v0</h2>
+        <p class="status" id="status-a">Esperando WebGPU…</p>
+        <div class="bar" id="bar-a" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <span id="fill-a"></span>
+        </div>
+        <p class="meta"><span id="bytes-a">0 B / —</span><span id="eta-a">—</span></p>
+        <p class="meta" id="file-a"></p>
+      </section>
+
+      <section class="card" id="phase-b">
+        <p class="phase-tag">Fase B · mientras A ya genera</p>
+        <h2>SD-Turbo</h2>
+        <p class="status" id="status-b">Aún no empieza. Espera a que A esté en la GPU.</p>
+        <div class="bar" id="bar-b" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <span id="fill-b"></span>
+        </div>
+        <p class="meta"><span id="bytes-b">0 B / —</span><span id="eta-b">—</span></p>
+        <p class="meta" id="file-b"></p>
+      </section>
+
+      <section class="card">
+        <h2>Generar</h2>
+        <p class="status">Modelo activo: <strong id="active">ninguno</strong></p>
+        <div class="switcher" role="group" aria-label="Modelo activo">
+          <button type="button" id="use-small" aria-pressed="false" disabled>Usar el pequeño</button>
+          <button type="button" id="use-large" aria-pressed="false" disabled>Usar SD-Turbo</button>
+        </div>
+        <form id="form" class="controls">
+          <label>Prompt (se entiende mejor en inglés)
+            <textarea id="prompt" rows="3">A brass lighthouse on a rocky coast at dusk, film still, soft fog</textarea>
+          </label>
+          <label>Prompt negativo (solo el modelo pequeño; SD-Turbo lo ignora)
+            <input id="negative" value="blurry, low quality, watermark">
+          </label>
+          <div class="split">
+            <label>Pasos <input id="steps" type="number" min="4" max="30" value="12"></label>
+            <label>Guidance <input id="guidance" type="number" min="1" max="12" step="0.5" value="7.5"></label>
+            <label>Semilla <input id="seed" type="number" min="0" placeholder="aleatoria"></label>
+          </div>
+          <div class="row">
+            <button type="submit" id="go" disabled>Generar</button>
+            <button type="button" class="secondary" id="clear">Vaciar caché</button>
+          </div>
+          <p class="status" id="gen-status"></p>
+        </form>
+      </section>
+    </div>
+
+    <section class="card">
+      <h2>Salida</h2>
+      <p class="lede">512×512. La primera sesión tarda: WebGPU compila los shaders.</p>
+      <canvas id="canvas" width="512" height="512"></canvas>
+      <p class="meta" id="result-meta"></p>
+    </section>
+  </div>
+
+  <script>
+    if (location.protocol === "file:") {
+      document.getElementById("file-banner").hidden = false;
+    }
+  </script>
+  <script type="module" src="./main.js"></script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "name": "ejemplo-webgpu",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Demos estáticas de inferencia en el navegador con WebGPU: Stable Diffusion por fases y un agente con LLM, imagen y voz. Sin servidor de inferencia.",
+  "scripts": {
+    "start": "python3 -m http.server 8000",
+    "serve": "npx --yes serve -l 8000",
+    "check": "node shared/selfcheck.mjs"
+  },
+  "license": "MIT"
+}

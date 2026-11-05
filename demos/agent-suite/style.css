@@ -1,0 +1,19 @@
+/**
+ * demos/agent-suite/style.css
+ * La descarga del LLM ocupa el ancho. Imagen y voz quedan en una franja.
+ */
+
+.stack { display: grid; gap: 1rem; }
+
+.components {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.llm-hero .hero-number { color: var(--brass); }
+.llm-hero.heavy .hero-number { color: var(--lead); }
+
+@media (max-width: 800px) {
+  .components { grid-template-columns: 1fr; }
+}

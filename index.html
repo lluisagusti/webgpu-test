@@ -1,0 +1,64 @@
+<!-- Portada de ejemplo-webgpu. Enlaza las dos demos. No ejecuta modelos. -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ejemplo-webgpu</title>
+  <link rel="stylesheet" href="./shared/style.css">
+</head>
+<body>
+  <div id="file-banner" class="file-banner" hidden>
+    <strong>file:// no funciona.</strong>
+    El navegador bloquea los módulos y la descarga de los modelos si abres el HTML
+    con doble clic. En la carpeta del repositorio ejecuta
+    <code>python3 -m http.server 8000</code>
+    y entra en <a href="http://localhost:8000">http://localhost:8000</a>.
+  </div>
+
+  <header class="top">
+    <div>
+      <p class="eyebrow">ejemplo-webgpu · antes llamado ejemplo/WebGL</p>
+      <h1>Inferencia en tu GPU, dentro de la pestaña.</h1>
+    </div>
+  </header>
+
+  <p class="lede">
+    Dos demos estáticas. No hay servidor de modelos: el navegador baja los pesos,
+    los guarda en la Cache API y los ejecuta con WebGPU. Hace falta un servidor
+    de ficheros local. <code>file://</code> no sirve.
+  </p>
+
+  <div class="grid" style="margin-top: 1.4rem; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
+    <article class="card">
+      <p class="eyebrow">Demo 1</p>
+      <h2>SD por fases</h2>
+      <p>
+        Primero un Stable Diffusion pequeño (~1,4 GB). Cuando ya puede generar,
+        empieza a bajar SD-Turbo (~2,3 GB). Dos barras, y puedes cambiar de modelo.
+      </p>
+      <p><a href="./demos/sd-phased/">Abrir sd-phased</a></p>
+    </article>
+    <article class="card">
+      <p class="eyebrow">Demo 2</p>
+      <h2>Agente</h2>
+      <p>
+        Un LLM (por defecto Olmo 3 7B en q4f16, ~3,8 GB; hay un preset de ~7,6 GB),
+        el mismo SD pequeño y voz MMS en español. El modelo puede pedir una imagen
+        o leer una frase en alto.
+      </p>
+      <p><a href="./demos/agent-suite/">Abrir agent-suite</a></p>
+    </article>
+  </div>
+
+  <p class="lede" style="margin-top: 1.5rem;">
+    Instrucciones, tamaños y licencias de los pesos: <a href="./README.md">README</a>.
+  </p>
+
+  <script>
+    if (location.protocol === "file:") {
+      document.getElementById("file-banner").hidden = false;
+    }
+  </script>
+</body>
+</html>
